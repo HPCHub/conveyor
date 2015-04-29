@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="validation">
+
+    <target name="check-input-property" unless="input">
+        <fail message="you must specify input file" />
+    </target>
+
+
+    <target name="check-file-exists">
+        <available property="file-exists" file="${input}" />
+    </target>
+
+
+    <target name="check-input-file" unless="file-exists">
+        <fail message="file &quot;${input}&quot; not found" />
+    </target>
+
+
+    <target name="file-validate" depends="check-input-property,check-file-exists,check-input-file" description="validate input file existance">
+    </target>
+
+</project>

@@ -1,0 +1,1 @@
+${samtools.path} import "${stat.fai-index.file}" "${input.sam.file}" "${output.bam.file}";

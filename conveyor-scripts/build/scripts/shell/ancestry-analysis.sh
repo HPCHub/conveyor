@@ -1,0 +1,1 @@
+${php.path} ${ancestry-analyser.path} ${input.snp-annotated-tab.file} ${output.ancestry.file}

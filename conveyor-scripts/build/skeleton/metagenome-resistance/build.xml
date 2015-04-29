@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="metagenome-resistance">
+
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties">
+		<classpath>
+			<pathelement location="${ant.contrib.path}" />
+		</classpath>
+	</taskdef>
+
+	<target name="extract-file">
+		<property name="input.csfasta.file" value="${input.csfasta.file}" />
+		<propertyregex property="output.csfasta.file" input="${input.csfasta.file}" regexp="(.*?)(\.(?:gz|bz2|rar|zip))?$" select="\1" />
+		<property name="input.qual.file" value="${input.qual.file}" />
+		<propertyregex property="output.qual.file" input="${input.qual.file}" regexp="(.*?)(\.(?:gz|bz2|rar|zip))?$" select="\1" />
+	</target>
+
+	<target name="solid_preprocess_filter_v2" depends="extract-file">
+		<property name="input.csfasta.file" value="${input.csfasta.file}"/>
+		<propertyregex input="${input.csfasta.file}" property="output.csfasta.file" regexp="^([^\.]+)\..*$" select="\1_T_F3.csfasta"/>
+		<property name="input.qual.file" value="${input.qual.file}" />
+	</target>
+
+	<target name="csfasta2fasta.py" depends="solid_preprocess_filter_v2">
+		<property name="input.csfasta.file" value="${input.csfasta.file}"/>
+		<propertyregex property="output.csfasta.file" input="${input.csfasta.file}" regexp="^(.*)$" select="\1_BASESPACE" />
+	</target>
+
+	<target name="rapsearch" depends="csfasta2fasta.py">
+		<property name="input.fasta.file" value="${input.csfasta.file}"/>
+		<propertyregex property="output.m8.file" input="${input.fasta.file}" regexp=".*$" select="output.m8" />
+	</target>
+
+	<target name="single_matches.py" depends="rapsearch">
+		<property name="input.m8.file" value="${input.m8.file}"/>
+		<propertyregex property="output.m8.file" input="${input.m8.file}" regexp="^(.*)\.(.*)$" select="\1-filtered.\2" />
+	</target>
+
+</project>

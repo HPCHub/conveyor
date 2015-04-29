@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="metagenome-long-reads-functional">
+
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties">
+		<classpath>
+			<pathelement location="${ant.contrib.path}" />
+		</classpath>
+	</taskdef>
+
+
+	<target name="bowtie2-human-mapping">
+		<property name="input.fastq.file" value="${input.fastq.file}" />
+		<property name="output.fastq.origin" value="${input.fastq.file}" />
+		<propertyregex property="output.fastq.file" input="${input.fastq.file}" regexp="^(.*)\.(.*)$" select="\1.nohum.\2" />
+	</target>
+
+
+	<target name="bowtie2-reference-mapping" depends="bowtie2-human-mapping">
+		<property name="input.fastq.file" value="${input.fastq.file}" />
+		<propertyregex property="output.sam.file" input="${input.fastq.file}" regexp="^([^\.]*).*$" select="\1.reference-mapped.sam" />
+	</target>
+
+
+	<target name="sam2bam" depends="bowtie2-reference-mapping">
+		<property name="stat.fai-index.file" value="${input.fai-index.file}" />
+		<property name="input.sam.file" value="${input.reference-mapped.file}" />
+		<propertyregex property="output.bam.file" input="${input.sam.file}" regexp="^(.*)\..*$" select="\1.bam" />
+	</target>
+
+
+	<target name="sort-bam" depends="sam2bam">
+		<property name="input.bam.file" value="${input.bam.file}" />
+		<basename property="output.bam-file.prefix" file="${input.bam.file}" suffix=".bam" />
+		<propertyregex property="output.bam.file" input="${input.bam.file}" regexp="^(.*)\.(.*)$" select="\1.sorted.\2" />
+	</target>
+
+
+	<target name="genome-coverage-bed" depends="sort-bam">
+		<property name="stat.ref-genome.file" value="${input.ref-genome.file}" />
+		<property name="stat.item-id.file" value="${input.item-id.file}" />
+		<property name="input.bam.file" value="${input.bam.file}" />
+		<propertyregex property="output.coverage.file" input="${input.fastq.file}" regexp="^([^\.]*).*$" select="\1.coverage.txt" />
+		<property name="output.bp-coverage.file" value="bp_cov_id.txt" />
+		<property name="output.pos-coverage.file" value="pos_cov_id.txt" />
+	</target>
+
+
+	<target name="metagenome-long-reads-db-loader.py" depends="genome-coverage-bed">
+		<property name="input.bp-coverage.file" value="${input.bp-coverage.file}" />
+		<property name="input.pos-coverage.file" value="${input.pos-coverage.file}" />
+	</target>
+
+</project>

@@ -1,0 +1,25 @@
+<project name="conveyor-web">
+
+	<property name="host" value="cluster.ripcm.com" />
+
+	<target name="deploy" description="deploy web application on production server">
+		<!-- <scp file="target/conveyor.war" todir="${user.name}@${host}:/var/lib/tomcat6/conveyor" keyfile="${user.home}/.ssh/id_rsa" verbose="true" /> -->
+		<echo>start</echo>
+		<scp file="target/conveyor.war" todir="jsub@${host}:/var/lib/tomcat6/conveyor" keyfile="${user.home}/.ssh/id_rsa" verbose="true" passphrase="propoy5"  />
+		<echo>end</echo>
+	</target>
+
+	<target name="check-dist-directory">
+		<available file="target/conveyor.war" property="conveyor.dist.exists" />
+	</target>
+
+	<target name="is-dist-exists" unless="conveyor.dist.exists">
+		<fail>target/conveyor.war does not exists</fail>
+	</target>
+
+	<target name="print-hosts" description="print list of available for deploy hosts">
+		<echo>cluster.ripcm.com</echo>
+		<echo>cluster.kaz.ripcm.com</echo>
+		<echo>jsub-test.ripcm.com</echo>
+	</target>
+</project>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="jsub-autotest">
+
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties">
+		<classpath>
+			<pathelement location="${ant.contrib.path}" />
+		</classpath>
+	</taskdef>
+
+
+	<target name="autotest-stage-1">
+		<property name="input.first.file" value="${input.first.file}" />
+		<property name="input.second.file" value="${input.second.file}" />
+		<propertyregex property="output.second.file" input="${input.first.file}" regexp="^(.*)\.(.*)$" select="\1.stage-1.\2" />
+		<propertyregex property="output.third.file" input="${input.first.file}" regexp="^(.*)\.(.*)$" select="\1.third.\2" />
+	</target>
+
+
+	<target name="autotest-stage-2" depends="autotest-stage-1">
+		<property name="input.first.file" value="${input.first.file}" />
+		<property name="input.second.file" value="${input.second.file}" />
+		<property name="input.third.file" value="${input.third.file}" />
+		<propertyregex property="output.result.file" input="${input.second.file}" regexp="^(.*)\.(.*)$" select="\1.result.\2" />
+		<propertyregex property="output.first.file" input="${input.first.file}" regexp="^(.*)\.(.*)$" select="\1.changed.\2" />
+		<propertyregex property="output.second.file" input="${input.second.file}" regexp="^(.*)\.(.*)$" select="\1.second.\2" />
+	</target>
+
+    <target name="autotest-python-stage.py" depends="autotest-stage-2">
+    </target>
+</project>

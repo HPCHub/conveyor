@@ -1,0 +1,1 @@
+/srv/common/bin/python /data3/bio/biouser/tools/conveyor/scripts/python/python-connection-test.py

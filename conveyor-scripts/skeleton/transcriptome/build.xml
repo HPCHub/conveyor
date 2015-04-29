@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="transcriptome">
+
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties">
+		<classpath>
+			<pathelement location="${ant.contrib.path}" />
+		</classpath>
+	</taskdef>
+
+
+	<!-- input.bam.file : Mox_Tub_20120330_FRAG_Mox_P_F31335978955697-1-1.bam -->
+	<!-- sort.bam.file : Mox_Tub_20120330_FRAG_Mox_P_F31335978955697-1-1.sort.bam -->
+	<target name="sort-bam-file" description="sort input .bam file">
+		<property name="input.bam.file" value="${input.bam.file}" />
+		<propertyregex property="output.bam.file" input="${input.bam.file}" regexp="^(.*)\.bam$" select="\1.sort.bam" />
+	</target>
+
+
+	<!-- @param input.gff.file : Ppatens_152_gene_exons_NOT_FOR_BIOSCOPE.gff3 -->
+	<!-- @return output.gff.file : Ppatens_152_gene_exons_NOT_FOR_BIOSCOPE.sort.gff3 -->
+	<target name="sort-annotation-file" description="sort input .gff file">
+		<property name="input.gff.file" value="${input.gff.file}" />
+		<propertyregex property="output.gff.file" input="${input.gff.file}" regexp="^(.*)\.gff3$" select="\1.sort.gff3" />
+	</target>
+
+
+	<!-- @param input.reads.file -->
+	<target name="remove-fasta-comments">
+		<property name="input.fasta.file" value="${input.fasta.file}" />
+	</target>
+
+
+	<!-- extension-point name="prepare" depends="sort-bam-file,sort-annotation-file,remove-fasta-comments">
+	</extension-point -->
+
+
+	<!-- @param input.bam.file -->
+	<!-- @return output.bed.file -->
+	<target name="bam-to-bed" depends="sort-bam-file">
+		<property name="input.bam.file" value="${input.bam.file}" />
+		<propertyregex property="output.bed.file" input="${input.bam.file}" regexp="(.*)\.bam$" select="\1.bed" />
+	</target>
+
+
+	<target name="intersect-bed" depends="bam-to-bed">
+		<property name="input.bed.file" value="${input.bed.file}" />
+		<property name="input.gff.file" value="${input.gff.file}" />
+		<property name="output.non-exon.file" value="${project.build.dir}non_exon_reads.txt" />
+	</target>
+
+
+	<target name="build-transcriptome" depends="intersect-bed">
+		<property name="input.bed.file" value="${input.fasta.file}" />
+		<property name="input.gff.file" value="${input.non-exon.file}" />
+	</target>
+</project>

@@ -1,0 +1,123 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.ripcm.bioinformatics</groupId>
+	<artifactId>conveyor-core</artifactId>
+	<version>1.0</version>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+		<extensions>
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-ssh</artifactId>
+				<version>2.2</version>
+			</extension>
+		</extensions>
+		<plugins>
+			<!-- use properly version of JDK -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.5.1</version>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<profiles>
+		<profile>
+			<id>local</id>
+			<properties>
+				<environmentMode>development</environmentMode>
+				<defaultProjectDirectory>/home/zeleniy/workspace/jsub</defaultProjectDirectory>
+				<filesStore>/home/zeleniy/workspace/fileStore</filesStore>
+				<referencesStore>/home/zeleniy/workspace/fileStore/references</referencesStore>
+				<log.level>debug</log.level>
+			</properties>
+		</profile>
+		<profile>
+			<id>ripcm</id>
+			<properties>
+				<environmentMode>production</environmentMode>
+				<defaultProjectDirectory>/data6/bio/jsub</defaultProjectDirectory>
+				<filesStore>/data3/bio/reads</filesStore>
+				<referencesStore>/data3/bio/references</referencesStore>
+				<log.level>info</log.level>
+			</properties>
+		</profile>
+		<profile>
+			<id>jsub-test</id>
+			<properties>
+				<environmentMode>production</environmentMode>
+				<defaultProjectDirectory>/data6/bio/jsub</defaultProjectDirectory>
+				<filesStore>/data3/bio/reads</filesStore>
+				<referencesStore>/data3/bio/references</referencesStore>
+				<log.level>info</log.level>
+			</properties>
+		</profile>
+		<profile>
+			<id>kaz</id>
+			<properties>
+				<environmentMode>production</environmentMode>
+				<defaultProjectDirectory>/data/jsub</defaultProjectDirectory>
+				<filesStore>/data/bio/reads</filesStore>
+				<referencesStore>/data/bio/references</referencesStore>
+				<log.level>info</log.level>
+			</properties>
+		</profile>
+	</profiles>
+
+	<distributionManagement>
+		<repository>
+			<id>clusterRepository</id>
+			<name>Scientific Research Institute of Physical-Chemical Medicine</name>
+			<url>scp://cluster.ripcm.com/opt/apache-maven-3.0.4/repository</url>
+		</repository>
+	</distributionManagement>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>1.9.5</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.ripcm.bioinformatics</groupId>
+			<artifactId>jsub-core</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.activemq</groupId>
+			<artifactId>activemq-core</artifactId>
+			<version>5.7.0</version>
+			<exclusions>
+				<!-- exclude recent version of slf library -->
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.ripcm.bioinformatics</groupId>
+			<artifactId>biodb</artifactId>
+			<version>0.1</version>
+		</dependency>
+	</dependencies>
+
+</project>

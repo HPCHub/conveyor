@@ -1,0 +1,134 @@
+<project name="conveyor-scripts">
+
+
+	<property name="host" value="ripcm" />
+	<property file="${host}.build.properties" />
+
+
+	<target name="print-hosts" description="print list of available for deploy hosts">
+		<echo>ripcm</echo>
+		<echo>kaz</echo>
+		<echo>jsub-test</echo>
+	</target>
+
+
+	<target name="deploy-scripts" description="copy scripts to remote host">
+		<!--scp todir="biouser@${hostAddress}:${scriptsDir}" password="F8EcK2f5" verbose="true"-->
+		<scp todir="biouser@${hostAddress}:${scriptsDir}" keyfile="${user.home}/.ssh/id_rsa" verbose="true" passphrase="propoy5">
+			<fileset dir="build/scripts" />
+		</scp>
+	</target>
+
+
+	<target name="deploy-scenarios" depends="build" description="copy scenarios to remote host">
+		<!--scp todir="biouser@${hostAddress}:${skeletonDir}" password="jwcEn9uv" verbose="true"-->
+		<scp todir="biouser@${hostAddress}:${scriptsDir}" keyfile="${user.home}/.ssh/id_rsa" verbose="true" passphrase="propoy5">
+			<fileset dir="build/skeleton" />
+		</scp>
+	</target>
+
+
+	<target name="deploy" depends="deploy-scripts,deploy-scenarios" description="copy project build to remote host" />
+
+
+	<target name="clean" description="clean project">
+		<delete dir="build" />
+	</target>
+
+
+	<target name="build" description="build project" depends="clean,build-scenarios,build-scripts" />
+
+
+	<target name="build-scripts" description="build scripts">
+		<mkdir dir="build/scripts" />
+
+		<copy todir="build/scripts">
+			<fileset dir="scripts" />
+		</copy>
+		<replace file="build/scripts/python/metagenome-db-loader.py"
+			replacefilterfile="${host}.build.properties"
+		/>
+		<replace file="build/scripts/python/metagenome-long-reads-db-loader.py"
+			replacefilterfile="${host}.build.properties"
+		/>
+
+	</target>
+
+
+	<target name="build-scenarios" description="build scenarios">
+		<mkdir dir="build/skeleton" />
+
+		<copy todir="build/skeleton/metagenome-snp">
+			<fileset dir="skeleton/metagenome-snp" />
+		</copy>
+
+		<copy todir="build/skeleton/metagenome-long-reads-functional">
+			<fileset dir="skeleton/metagenome-long-reads-functional" />
+		</copy>
+
+		<copy todir="build/skeleton/metagenome-resistance">
+			<fileset dir="skeleton/metagenome-resistance" />
+		</copy>
+
+		<copy todir="build/skeleton/metagenome-illumina-functional">
+			<fileset dir="skeleton/metagenome-illumina-functional">
+				<include name="build.xml"/>
+				<include name="build.properties"/>
+			</fileset>
+		</copy>
+		<replace file="build/skeleton/metagenome-illumina-functional/build.properties"
+			replacefilterfile="skeleton/metagenome-illumina-functional/build.${host}.properties"
+		/>
+
+		<copy todir="build/skeleton/metagenome-illumina-taxonomic">
+			<fileset dir="skeleton/metagenome-illumina-taxonomic">
+				<include name="build.xml"/>
+				<include name="build.properties"/>
+			</fileset>
+		</copy>
+		<replace file="build/skeleton/metagenome-illumina-taxonomic/build.properties"
+			replacefilterfile="skeleton/metagenome-illumina-taxonomic/build.${host}.properties"
+		/>
+
+		<copy todir="build/skeleton/metagenome-solid-taxonomic">
+			<fileset dir="skeleton/metagenome-solid-taxonomic">
+				<include name="build.xml"/>
+				<include name="build.properties"/>
+			</fileset>
+		</copy>
+		<replace file="build/skeleton/metagenome-solid-taxonomic/build.properties"
+			replacefilterfile="skeleton/metagenome-solid-taxonomic/build.${host}.properties"
+		/>
+
+		<copy todir="build/skeleton/metagenome-solid-functional">
+			<fileset dir="skeleton/metagenome-solid-functional">
+				<include name="build.xml"/>
+				<include name="build.properties"/>
+			</fileset>
+		</copy>
+		<replace file="build/skeleton/metagenome-solid-functional/build.properties"
+			replacefilterfile="skeleton/metagenome-solid-functional/build.${host}.properties"
+		/>
+
+		<copy todir="build/skeleton/metagenome-solid-5500-taxonomic">
+			<fileset dir="skeleton/metagenome-solid-5500-taxonomic">
+				<include name="build.xml"/>
+				<include name="build.properties"/>
+			</fileset>
+		</copy>
+		<replace file="build/skeleton/metagenome-solid-5500-taxonomic/build.properties"
+			replacefilterfile="skeleton/metagenome-solid-5500-taxonomic/build.${host}.properties"
+		/>
+
+		<copy todir="build/skeleton/metagenome-solid-5500-functional">
+			<fileset dir="skeleton/metagenome-solid-5500-functional">
+				<include name="build.xml"/>
+				<include name="build.properties"/>
+			</fileset>
+		</copy>
+		<replace file="build/skeleton/metagenome-solid-5500-functional/build.properties"
+			replacefilterfile="skeleton/metagenome-solid-5500-functional/build.${host}.properties"
+		/>
+	</target>
+
+</project>

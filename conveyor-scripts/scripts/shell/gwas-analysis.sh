@@ -1,0 +1,1 @@
+${php.path} ${gwas-analyser.path} ${input.snp-annotated-tab.file} ${output.gwas-risks.file}

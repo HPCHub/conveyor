@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+
+	<!-- @param input.fasta.file -->
+	<target name="remove-comments">
+		<!-- exec executable="sed" logError="true" failonerror="true">
+			<arg line="-in-place '/#/d'" />
+			<arg line="${input.fasta.file}" />
+		</exec -->
+	</target>
+
+</project>

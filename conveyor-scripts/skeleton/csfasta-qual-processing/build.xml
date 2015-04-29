@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="csfasta-qual-processing">
+
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties">
+		<classpath>
+			<pathelement location="${ant.contrib.path}" />
+		</classpath>
+	</taskdef>
+
+	<property name="global.csfasta.file" value="${input.csfasta.file}" />
+	<property name="global.qual.file" value="${input.qual.file}" />
+
+	<target name="reads-filter.pl">
+		<property name="input.csfasta.file" value="${input.csfasta.file}" />
+		<property name="input.qual.file" value="${input.qual.file}" />
+		<property name="reads.filter.threshold" value="${reads.filter.threshold}" />
+		<propertyregex property="output.csfasta.file" input="${input.csfasta.file}" regexp="^(.*)\.(.*)$" select="\1.${reads.filter.threshold}.filtered.\2" />
+		<propertyregex property="output.qual.file" input="${input.qual.file}" regexp="^(.*)\.(.*)$" select="\1.${reads.filter.threshold}.filtered.\2" />
+	</target>
+
+	<target name="saet" depends="reads-filter.pl">
+		<property name="input.csfasta.file" value="${input.csfasta.file}" />
+		<property name="input.qual.file" value="${input.qual.file}" />
+		<propertyregex property="output.csfasta.file" input="${input.csfasta.file}" regexp="^(.*)\.(.*)$" select="\1.fixed.\2" />
+		<propertyregex property="output.qual.file" input="${input.qual.file}" regexp="^(.*)\.(.*)$" select="\1.fixed.\2" />
+	</target>
+
+	<target name="qv-trimming" depends="saet">
+		<property name="input.csfasta.file" value="${input.csfasta.file}" />
+		<property name="input.qual.file" value="${input.qual.file}" />
+		<propertyregex property="output.csfasta.file" input="${input.csfasta.file}" regexp="^(.*)\.(.*)$" select="\1.trimmed.\2" />
+	</target>
+
+	<target name="human-mapping" depends="qv-trimming">
+		<property name="input.csfasta.file" value="${input.csfasta.file}" />
+		<propertyregex property="output.csfasta.file" input="${input.csfasta.file}" regexp="^([^\.]*).*\.(.*)$" select="\1.nohum.\2" />
+	</target>
+
+	<target name="move" depends="human-mapping">
+		<property name="destination" value="${fixed.dir}" />
+		<property name="input.csfasta.file" value="${input.csfasta.file}" />
+		<property name="input.qual.file" value="${input.qual.file}" />
+	</target>
+
+	<target name="remove" depends="move">
+		<property name="input.first.file" value="${global.csfasta.file}" />
+		<property name="input.second.file" value="${global.qual.file}" />
+		<property name="output.csfasta.file" value="${global.csfasta.file}" />
+		<property name="output.qual.file" value="${global.qual.file}" />
+	</target>
+
+</project>

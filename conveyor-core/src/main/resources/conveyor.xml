@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <properties>
+        <property name="environmentMode" value="${environmentMode}" />
+        <property name="defaultProjectDirectory" value="${defaultProjectDirectory}" />
+        <property name="filesStore" value="${filesStore}" />
+        <property name="referencesStore" value="${referencesStore}" />
+    </properties>
+</configuration>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="human-reseq-solid-hg18">
+
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties">
+		<classpath>
+			<pathelement location="${ant.contrib.path}" />
+		</classpath>
+	</taskdef>
+	
+	<!-- 3) see page 104 of lifescope user manual /data4/bio/lifescope_data/docs/LifeScope2_5.1_Advanced_User_Guide.pdf -->
+	<target name="lscope-genomic-resequencing-lmp">
+        <property 
+            name="output.snp-annotated-tab.origin"
+            value="/data4/bio/lifescope_data/projects/jsub/${project.type}/${project.name}/outputs/dibayes/Group_1/${project.name}_SNP_annotated.tab"
+        />
+        <property 
+            name="output.snp-annotated-gff3.origin" 
+            value="/data4/bio/lifescope_data/projects/jsub/${project.type}/${project.name}/outputs/dibayes/Group_1/${project.name}_SNP_annotated.gff3"
+        />
+	</target>
+
+	<!-- 3.5) -->
+	<target name="quality-analysis" depends="lscope-genomic-resequencing-lmp">
+		<!-- Not implemented. -->
+	</target>
+
+	<!-- 4) -->
+	<target name="lscope-snp-filter" depends="lscope-genomic-resequencing-lmp">
+		<propertyregex property="output.snp-annotated-tab.file" input="${input.snp-annotated-tab.origin}" regexp="^(.*)\.(.*)$" select="\1.filt.\2" />
+	</target>
+
+	<!-- 5) -->
+	<target name="convert2prometheaseFormat" depends="lscope-snp-filter">
+		<propertyregex property="output.snp-annotated-tab.file" input="${input.snp-annotated-tab.file}" regexp="^(.*)\.(.*)$" select="\1.promet.\2" />
+	</target>
+
+	<!-- 6) -->
+	<target name="promethease-analysis" depends="convert2prometheaseFormat">
+		<!-- Promethease.exe GUI application. Not implemented. -->
+	</target>
+
+	<!-- 7) -->
+	<target name="gwas-analysis" depends="lscope-snp-filter">
+		<property name="output.gwas-risks.file" value="GWAS-risks.txt" />
+	</target>
+
+	<!-- 7b) -->
+	<target name="ancestry-analysis" depends="lscope-snp-filter">
+		<property name="output.ancestry.file" value="ancestry.txt" />
+	</target>
+
+	<!-- 8.1) -->
+	<target name="gff3-to-annovar" depends="lscope-genomic-resequencing-lmp">
+		<property name="output.annovar.file" value="${project.name}.human" />
+	</target>
+
+	<!-- 8.2) -->
+	<target name="annovar-analysis" depends="gff3-to-annovar">
+	</target>
+
+	<!-- 9) -->
+	<!-- target name="report-generation" depends="lscope-snp-filter">
+        <Not implemented.>
+    </target -->
+
+</project>
