@@ -79,6 +79,16 @@
 				<log.level>info</log.level>
 			</properties>
 		</profile>
+		<profile>
+			<id>hpchub</id>
+			<properties>
+				<environmentMode>production</environmentMode>
+				<defaultProjectDirectory>/shared/jsub</defaultProjectDirectory>
+				<filesStore>/shared/reads</filesStore>
+				<referencesStore>/shared/references</referencesStore>
+				<log.level>info</log.level>
+			</properties>
+		</profile>
 	</profiles>
 
 	<distributionManagement>
