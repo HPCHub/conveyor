@@ -281,7 +281,6 @@ if refGroupId in hmpReferences:
     firstOutputFileName  = runName + "_" + str(mappingRunId) + ".genus.txt"
     secondOutputFileName = runName + "_" + str(mappingRunId) + ".org.txt"
     
-    cursor.callproc("create_orgpos_vectors", [ mappingRunId, refGroupId, firstOutputFileName ])
     cursor.callproc("create_genus_vectors", [ mappingRunId, refGroupId, 1, firstOutputFileName ])
     cursor.callproc("create_org_vectors", [ mappingRunId, refGroupId, 1, secondOutputFileName ])
 # For functional (BGI)
