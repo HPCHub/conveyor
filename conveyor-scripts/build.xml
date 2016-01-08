@@ -9,12 +9,13 @@
 		<echo>ripcm</echo>
 		<echo>kaz</echo>
 		<echo>jsub-test</echo>
+		<echo>hpchub</echo>
 	</target>
 
 
-	<target name="deploy-scripts" description="copy scripts to remote host">
+	<target name="deploy-scripts" depends="build" description="copy scripts to remote host">
 		<!--scp todir="biouser@${hostAddress}:${scriptsDir}" password="F8EcK2f5" verbose="true"-->
-		<scp todir="biouser@${hostAddress}:${scriptsDir}" keyfile="${user.home}/.ssh/id_rsa" verbose="true" passphrase="propoy5">
+		<scp todir="${hostAddress}:${scriptsDir}" port="${sshPort}" keyfile="${keyFile}" verbose="true" passphrase="${passphrase}">
 			<fileset dir="build/scripts" />
 		</scp>
 	</target>
@@ -22,7 +23,7 @@
 
 	<target name="deploy-scenarios" depends="build" description="copy scenarios to remote host">
 		<!--scp todir="biouser@${hostAddress}:${skeletonDir}" password="jwcEn9uv" verbose="true"-->
-		<scp todir="biouser@${hostAddress}:${scriptsDir}" keyfile="${user.home}/.ssh/id_rsa" verbose="true" passphrase="propoy5">
+		<scp todir="${hostAddress}:${skeletonDir}" port="${sshPort}" keyfile="${keyFile}" verbose="true" passphrase="${passphrase}">
 			<fileset dir="build/skeleton" />
 		</scp>
 	</target>
