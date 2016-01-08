@@ -1,1 +1,0 @@
-${perl.path} ${gff3-to-annovar.path} ${input.snp-annotated-gff3.origin} -format gff3-solid > ${output.annovar.file}

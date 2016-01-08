@@ -1,1 +1,0 @@
-${csfasta-quality-filter.path} -f "${input.csfasta.file}" -q "${input.qual.file}" -o "${output.csfasta.file}" -l 30 -s 30

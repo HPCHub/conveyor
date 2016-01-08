@@ -1,1 +1,0 @@
-${lscope-2-promethease-converter.path} ${input.snp-annotated-tab.file} ${output.snp-annotated-tab.file}

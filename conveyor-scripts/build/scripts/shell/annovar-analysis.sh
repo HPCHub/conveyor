@@ -1,1 +1,0 @@
-${perl.path} ${annovar-annotate-variation.path} ${input.annovar.file} /data3/bio/biouser/tools/annovar/humandb/
